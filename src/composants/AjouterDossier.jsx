@@ -6,8 +6,41 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
 import { TwitterPicker } from 'react-color';
+import { green, red } from '@material-ui/core/colors';
+import {withStyles, makeStyles} from '@material-ui/core/styles';
+
+const BoutonVert = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText(green[500]),
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+  }))(Button);
+
+  const BoutonRouge = withStyles((theme) => ({
+    root: {
+      color: theme.palette.getContrastText(red[500]),
+      backgroundColor: red[500],
+      '&:hover': {
+        backgroundColor: red[700],
+      },
+    },
+  }))(Button);
+
+
+  const EspaceBouton = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+
 
 export default function AjouterDossier({ouvert, setOuvert, gererAjout}) {
+  const classMargin = EspaceBouton();
   const [nom, setNom] = useState('');
   const [couverture, setCouverture] = useState('');
   const [couleur, setCouleur] = useState('#537169');
@@ -20,7 +53,11 @@ export default function AjouterDossier({ouvert, setOuvert, gererAjout}) {
 
   return (
     <div className="AjouterDossier">
-      <Dialog open={ouvert} onClose={()=>setOuvert(false)} aria-labelledby="form-dialog-title">
+      <Dialog 
+      open={ouvert} 
+      onClose={()=>setOuvert(false)} 
+      aria-labelledby="form-dialog-title"
+      >
         <DialogTitle id="form-dialog-title">Ajouter un dossier</DialogTitle>
         <DialogContent>
           <TextField
@@ -32,6 +69,7 @@ export default function AjouterDossier({ouvert, setOuvert, gererAjout}) {
             fullWidth
             onChange={(e) => setNom(e.target.value)}
             defaultValue={nom}
+            margin="normal"
           />
           <TextField
             margin="dense"
@@ -44,18 +82,25 @@ export default function AjouterDossier({ouvert, setOuvert, gererAjout}) {
           />
           <TwitterPicker 
             width="100%" 
+            colors={['#ABDEE6','#CBAACB','#FFFFB5','#FFCCB6','#F3B0C3','#CCE2CB']}
             triangle="hide" 
             onChangeComplete={(couleur, e) => setCouleur(couleur.hex)}
             color={couleur}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>{setOuvert(false); viderChamps()}} color="primary">
+        <DialogActions className={classMargin.root}>
+          <BoutonRouge 
+          onClick={()=>{setOuvert(false); viderChamps()}} 
+          color="secondary"
+          >
             Annuler
-          </Button>
-          <Button onClick={() => {nom !== '' && gererAjout(nom, couverture, couleur); viderChamps(); }} color="primary">
+          </BoutonRouge>
+          <BoutonVert 
+          onClick={() => {nom !== '' && gererAjout(nom, couverture, couleur); viderChamps(); }} 
+          color="secondary"
+          >
             Ajouter
-          </Button>
+          </BoutonVert>
         </DialogActions>
       </Dialog>
     </div>

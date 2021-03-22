@@ -30,10 +30,18 @@ export default function ListeDossiers({utilisateur, etatDossiers}) {
       chercherDossiers();
     }, []
   );
-
   return (
     <ul className="ListeDossiers">
       {
+        
+        // Utilisateur n'a aucun dossier 
+        dossiers.length==0 ?
+        <div className="NonSignets">
+          <h3>Votre liste de dossiers est vide</h3>
+          <h1>(☉_☉)</h1>
+        </div>
+        // Sinon :
+        :
         dossiers.map( 
           dossier =>  <li key={dossier.id}><Dossier {...dossier} /></li>
         )
